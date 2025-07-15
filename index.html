@@ -5,22 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThumbCraft - Création de Miniatures YouTube Pro</title>
     <style>
+        /* Définition des variables globales */
+        :root {
+            --primary-color: #ff6b6b;
+            --primary-gradient: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --dark-bg: #1a1a1a;
+            --light-bg: #ffffff;
+            --text-dark: #333;
+            --text-light: #ffffff;
+            --font-family: 'Arial', sans-serif;
+            --border-radius-sm: 10px;
+            --border-radius-md: 20px;
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styles de base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: var(--font-family);
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-dark);
+            background: var(--secondary-gradient);
             overflow-x: hidden;
         }
 
-        /* Navigation */
-        nav {
+        /* Conteneur principal */
+        main {
+            padding-top: 70px; /* Espace pour la barre de navigation fixe */
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+        }
+
+        .section-dark {
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .section-light {
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        /* Barre de Navigation */
+        .navbar {
             position: fixed;
             top: 0;
             width: 100%;
@@ -31,14 +96,12 @@
             transition: all 0.3s ease;
         }
 
-        nav.scrolled {
+        .navbar.scrolled {
             background: rgba(0, 0, 0, 0.95);
             padding: 0.5rem 0;
         }
 
         .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -48,7 +111,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #ff6b6b;
+            color: var(--primary-color);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -67,49 +130,34 @@
         }
 
         .nav-links a {
-            color: white;
+            color: var(--text-light);
             text-decoration: none;
             transition: color 0.3s ease;
             font-weight: 500;
         }
 
         .nav-links a:hover {
-            color: #ff6b6b;
+            color: var(--primary-color);
         }
 
-        /* Hero Section */
+        /* Section Héros (Hero) */
         .hero {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-light);
+            background: var(--secondary-gradient);
             position: relative;
             overflow: hidden;
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff10" points="0,0 1000,300 1000,1000 0,700"/></svg>');
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
+        
         .hero-content {
             max-width: 800px;
             z-index: 2;
             position: relative;
+            padding: 0 1rem;
         }
 
         .hero h1 {
@@ -124,10 +172,11 @@
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
+        /* Bouton d'Appel à l'Action (CTA) */
         .cta-button {
             display: inline-block;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            color: white;
+            background: var(--primary-gradient);
+            color: var(--text-light);
             padding: 1rem 2rem;
             text-decoration: none;
             border-radius: 50px;
@@ -135,166 +184,92 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
-            animation: fadeInUp 1s ease-out 0.6s both;
+            border: none;
+            cursor: pointer;
         }
 
         .cta-button:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
         }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        
+        .hero .cta-button {
+            animation: fadeInUp 1s ease-out 0.6s both;
         }
 
-        /* Sections */
-        .section {
-            padding: 6rem 0;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-
-        .section-dark {
-            background: #1a1a1a;
-            color: white;
-        }
-
-        .section-light {
-            background: white;
-            color: #333;
-        }
-
-        .section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            border-radius: 2px;
-        }
-
-        /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .service-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .service-card .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #ff6b6b;
-        }
-
-        /* Portfolio Grid */
-        .portfolio-grid {
+        /* Grilles (Services, Portfolio, Tarifs) */
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 4rem;
         }
 
+        /* Cartes (Services, Portfolio, Tarifs) */
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .service-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .service-card h3, .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
         .portfolio-item {
-            background: #f8f9fa;
             border-radius: 15px;
             overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .portfolio-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .portfolio-item .thumbnail {
             width: 100%;
             height: 200px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: var(--secondary-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--text-light);
             font-size: 1.2rem;
             font-weight: bold;
         }
 
         .portfolio-item .info {
             padding: 1.5rem;
+            background: #f8f9fa;
         }
 
-        .portfolio-item h3 {
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .portfolio-item p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Pricing */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
+        .portfolio-item h3 { color: var(--text-dark); margin-bottom: 0.5rem; }
+        .portfolio-item p { color: #666; font-size: 0.9rem; }
+        
+        /* Cartes de Tarifs */
         .pricing-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
             position: relative;
         }
-
+        
         .pricing-card.popular {
-            border: 3px solid #ff6b6b;
+            border: 3px solid var(--primary-color);
             transform: scale(1.05);
         }
 
@@ -304,421 +279,247 @@
             top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: #ff6b6b;
-            color: white;
+            background: var(--primary-color);
+            color: var(--text-light);
             padding: 0.5rem 1rem;
             border-radius: 15px;
             font-size: 0.8rem;
             font-weight: bold;
         }
+        
+        .pricing-card.popular:hover { transform: translateY(-10px) scale(1.05); }
+        .pricing-card .price { font-size: 2.5rem; font-weight: bold; color: var(--primary-color); margin-bottom: 1rem; }
+        .pricing-card .price span { font-size: 1rem; color: #666; }
+        .pricing-card ul { list-style: none; margin-bottom: 2rem; }
+        .pricing-card li { padding: 0.5rem 0; border-bottom: 1px solid #eee; }
+        .pricing-card li:last-child { border-bottom: none; }
+        .pricing-card li::before { content: '✓'; color: #4caf50; font-weight: bold; margin-right: 0.5rem; }
 
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .pricing-card.popular:hover {
-            transform: translateY(-10px) scale(1.05);
-        }
-
-        .pricing-card h3 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-card .price {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff6b6b;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-card .price span {
-            font-size: 1rem;
-            color: #666;
-        }
-
-        .pricing-card ul {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-card li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .pricing-card li:last-child {
-            border-bottom: none;
-        }
-
-        .pricing-card li::before {
-            content: '✓';
-            color: #4caf50;
-            font-weight: bold;
-            margin-right: 0.5rem;
-        }
-
-        /* Contact Form */
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group textarea {
+        /* Formulaire de Contact */
+        .contact-form { max-width: 600px; margin: 4rem auto 0; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 1rem;
             border: 2px solid #ddd;
-            border-radius: 10px;
+            border-radius: var(--border-radius-sm);
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: #ff6b6b;
+            border-color: var(--primary-color);
         }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        /* Footer */
-        footer {
-            background: #1a1a1a;
-            color: white;
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        
+        /* Pied de Page (Footer) */
+        .footer {
+            background: var(--dark-bg);
+            color: var(--text-light);
             text-align: center;
             padding: 2rem 0;
         }
+        
+        .social-links { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+        .social-links a { color: var(--text-light); font-size: 1.5rem; transition: color 0.3s ease; }
+        .social-links a:hover { color: var(--primary-color); }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-links a {
-            color: white;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: #ff6b6b;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .section {
-                padding: 4rem 0;
-            }
-
-            .section h2 {
-                font-size: 2rem;
-            }
-
-            .services-grid,
-            .portfolio-grid,
-            .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scroll animations */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.6s ease;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Design Réactif (Responsive) */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .section { padding: 4rem 1rem; }
+            .section-title { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; padding: 0 1rem; }
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">ThumbCraft</a>
-            <ul class="nav-links">
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#tarifs">Tarifs</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="accueil" class="hero">
-        <div class="hero-content">
-            <h1>Miniatures YouTube qui Captent l'Attention</h1>
-            <p>Transformez vos vues avec des miniatures professionnelles conçues pour maximiser votre taux de clic et booster votre chaîne YouTube.</p>
-            <a href="#contact" class="cta-button">Commencer Maintenant</a>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section section-dark">
-        <h2>Nos Services</h2>
-        <div class="services-grid fade-in">
-            <div class="service-card">
-                <span class="icon">🎨</span>
-                <h3>Design Personnalisé</h3>
-                <p>Créations uniques adaptées à votre style et à votre audience. Chaque miniature est conçue pour refléter votre identité visuelle.</p>
-            </div>
-            <div class="service-card">
-                <span class="icon">⚡</span>
-                <h3>Livraison Rapide</h3>
-                <p>Recevez vos miniatures en moins de 24h. Service express disponible pour vos contenus urgents.</p>
-            </div>
-            <div class="service-card">
-                <span class="icon">📈</span>
-                <h3>Optimisation CTR</h3>
-                <p>Miniatures conçues selon les meilleures pratiques pour maximiser votre taux de clic et améliorer vos performances.</p>
-            </div>
-            <div class="service-card">
-                <span class="icon">🔄</span>
-                <h3>Révisions Illimitées</h3>
-                <p>Modifications gratuites jusqu'à votre satisfaction complète. Votre réussite est notre priorité.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section section-light">
-        <h2>Portfolio</h2>
-        <div class="portfolio-grid fade-in">
-            <div class="portfolio-item">
-                <div class="thumbnail">TECH REVIEW</div>
-                <div class="info">
-                    <h3>Chaîne Tech</h3>
-                    <p>Miniatures dynamiques pour reviews de produits technologiques</p>
-                </div>
-            </div>
-            <div class="portfolio-item">
-                <div class="thumbnail">GAMING STREAM</div>
-                <div class="info">
-                    <h3>Gaming</h3>
-                    <p>Designs énergiques pour contenus gaming et streaming</p>
-                </div>
-            </div>
-            <div class="portfolio-item">
-                <div class="thumbnail">FOOD VLOG</div>
-                <div class="info">
-                    <h3>Food & Lifestyle</h3>
-                    <p>Miniatures appétissantes pour vlogs culinaires</p>
-                </div>
-            </div>
-            <div class="portfolio-item">
-                <div class="thumbnail">EDUCATION</div>
-                <div class="info">
-                    <h3>Éducation</h3>
-                    <p>Designs clairs et informatifs pour contenus éducatifs</p>
-                </div>
-            </div>
-            <div class="portfolio-item">
-                <div class="thumbnail">BUSINESS</div>
-                <div class="info">
-                    <h3>Business</h3>
-                    <p>Miniatures professionnelles pour contenus business</p>
-                </div>
-            </div>
-            <div class="portfolio-item">
-                <div class="thumbnail">MUSIC</div>
-                <div class="info">
-                    <h3>Musique</h3>
-                    <p>Designs créatifs pour artistes et contenus musicaux</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="tarifs" class="section section-dark">
-        <h2>Nos Tarifs</h2>
-        <div class="pricing-grid fade-in">
-            <div class="pricing-card">
-                <h3>Starter</h3>
-                <div class="price">15€ <span>/miniature</span></div>
-                <ul>
-                    <li>1 miniature personnalisée</li>
-                    <li>2 révisions incluses</li>
-                    <li>Livraison en 48h</li>
-                    <li>Format haute résolution</li>
+    <header>
+        <nav id="navbar" class="navbar">
+            <div class="nav-container container">
+                <a href="#accueil" class="logo">ThumbCraft</a>
+                <ul class="nav-links">
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#tarifs">Tarifs</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
-                <a href="#contact" class="cta-button">Choisir</a>
             </div>
-            <div class="pricing-card popular">
-                <h3>Pro</h3>
-                <div class="price">40€ <span>/pack de 3</span></div>
-                <ul>
-                    <li>3 miniatures personnalisées</li>
-                    <li>Révisions illimitées</li>
-                    <li>Livraison en 24h</li>
-                    <li>Consultation design incluse</li>
-                    <li>Templates pour cohérence</li>
-                </ul>
-                <a href="#contact" class="cta-button">Choisir</a>
-            </div>
-            <div class="pricing-card">
-                <h3>Premium</h3>
-                <div class="price">100€ <span>/pack de 10</span></div>
-                <ul>
-                    <li>10 miniatures personnalisées</li>
-                    <li>Révisions illimitées</li>
-                    <li>Livraison express 12h</li>
-                    <li>Charte graphique complète</li>
-                    <li>Support prioritaire</li>
-                    <li>Formats multiples</li>
-                </ul>
-                <a href="#contact" class="cta-button">Choisir</a>
-            </div>
-        </div>
-    </section>
+        </nav>
+    </header>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section section-light">
-        <h2>Contactez-nous</h2>
-        <div class="contact-form fade-in">
-            <form>
-                <div class="form-group">
-                    <label for="nom">Nom complet</label>
-                    <input type="text" id="nom" name="nom" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="chaine">Nom de votre chaîne YouTube</label>
-                    <input type="text" id="chaine" name="chaine">
-                </div>
-                <div class="form-group">
-                    <label for="service">Service souhaité</label>
-                    <select id="service" name="service" style="width: 100%; padding: 1rem; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem;">
-                        <option value="starter">Starter - 15€</option>
-                        <option value="pro">Pro - 40€</option>
-                        <option value="premium">Premium - 100€</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="message">Décrivez votre projet</label>
-                    <textarea id="message" name="message" placeholder="Parlez-nous de votre chaîne, de votre style souhaité, et de vos besoins spécifiques..."></textarea>
-                </div>
-                <button type="submit" class="cta-button" style="width: 100%;">Envoyer la demande</button>
-            </form>
-        </div>
-    </section>
+    <main>
+        <section id="accueil" class="hero">
+            <div class="hero-content">
+                <h1>Miniatures YouTube qui Captent l'Attention</h1>
+                <p>Transformez vos vues avec des miniatures professionnelles conçues pour maximiser votre taux de clic et booster votre chaîne YouTube.</p>
+                <a href="#contact" class="cta-button">Commencer Maintenant</a>
+            </div>
+        </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
+        <section id="services" class="section section-dark">
+            <div class="container">
+                <h2 class="section-title">Nos Services</h2>
+                <div class="grid services-grid fade-in">
+                    <div class="card service-card">
+                        <span class="icon">🎨</span>
+                        <h3>Design Personnalisé</h3>
+                        <p>Créations uniques adaptées à votre style et à votre audience. Chaque miniature est conçue pour refléter votre identité visuelle.</p>
+                    </div>
+                    <div class="card service-card">
+                        <span class="icon">⚡</span>
+                        <h3>Livraison Rapide</h3>
+                        <p>Recevez vos miniatures en moins de 24h. Service express disponible pour vos contenus urgents.</p>
+                    </div>
+                    <div class="card service-card">
+                        <span class="icon">📈</span>
+                        <h3>Optimisation CTR</h3>
+                        <p>Miniatures conçues selon les meilleures pratiques pour maximiser votre taux de clic et améliorer vos performances.</p>
+                    </div>
+                    <div class="card service-card">
+                        <span class="icon">🔄</span>
+                        <h3>Révisions Illimitées</h3>
+                        <p>Modifications gratuites jusqu'à votre satisfaction complète. Votre réussite est notre priorité.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="section section-light">
+            <div class="container">
+                <h2 class="section-title">Notre Portfolio</h2>
+                <div class="grid portfolio-grid fade-in">
+                    <div class="card portfolio-item"><div class="thumbnail">TECH REVIEW</div><div class="info"><h3>Chaîne Tech</h3><p>Miniatures dynamiques pour reviews de produits.</p></div></div>
+                    <div class="card portfolio-item"><div class="thumbnail">GAMING</div><div class="info"><h3>Gaming</h3><p>Designs énergiques pour contenus gaming et streaming.</p></div></div>
+                    <div class="card portfolio-item"><div class="thumbnail">FOOD VLOG</div><div class="info"><h3>Food & Lifestyle</h3><p>Miniatures appétissantes pour vlogs culinaires.</p></div></div>
+                    <div class="card portfolio-item"><div class="thumbnail">EDUCATION</div><div class="info"><h3>Éducation</h3><p>Designs clairs et informatifs pour contenus éducatifs.</p></div></div>
+                    <div class="card portfolio-item"><div class="thumbnail">BUSINESS</div><div class="info"><h3>Business</h3><p>Miniatures professionnelles pour contenus business.</p></div></div>
+                    <div class="card portfolio-item"><div class="thumbnail">MUSIQUE</div><div class="info"><h3>Musique</h3><p>Designs créatifs pour artistes et clips musicaux.</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tarifs" class="section section-dark">
+            <div class="container">
+                <h2 class="section-title">Nos Tarifs</h2>
+                <div class="grid pricing-grid fade-in">
+                    <div class="card pricing-card">
+                        <h3>Starter</h3><div class="price">15€ <span>/miniature</span></div>
+                        <ul><li>1 miniature personnalisée</li><li>2 révisions incluses</li><li>Livraison en 48h</li><li>Format haute résolution</li></ul>
+                        <a href="#contact" class="cta-button">Choisir</a>
+                    </div>
+                    <div class="card pricing-card popular">
+                        <h3>Pro</h3><div class="price">40€ <span>/pack de 3</span></div>
+                        <ul><li>3 miniatures personnalisées</li><li>Révisions illimitées</li><li>Livraison en 24h</li><li>Consultation design incluse</li></ul>
+                        <a href="#contact" class="cta-button">Choisir</a>
+                    </div>
+                    <div class="card pricing-card">
+                        <h3>Premium</h3><div class="price">100€ <span>/pack de 10</span></div>
+                        <ul><li>10 miniatures personnalisées</li><li>Révisions illimitées</li><li>Livraison express 12h</li><li>Support prioritaire</li></ul>
+                        <a href="#contact" class="cta-button">Choisir</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section section-light">
+            <div class="container">
+                <h2 class="section-title">Contactez-nous</h2>
+                <div class="contact-form fade-in">
+                    <form>
+                        <div class="form-group"><label for="nom">Nom complet</label><input type="text" id="nom" name="nom" required></div>
+                        <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
+                        <div class="form-group"><label for="chaine">Nom de votre chaîne YouTube</label><input type="text" id="chaine" name="chaine"></div>
+                        <div class="form-group">
+                            <label for="service">Service souhaité</label>
+                            <select id="service" name="service">
+                                <option value="starter">Starter - 15€</option>
+                                <option value="pro">Pro - 40€</option>
+                                <option value="premium">Premium - 100€</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Décrivez votre projet</label>
+                            <textarea id="message" name="message" placeholder="Parlez-nous de votre chaîne, du style souhaité..."></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Envoyer la demande</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
             <div class="social-links">
-                <a href="#">📧</a>
-                <a href="#">📘</a>
-                <a href="#">📷</a>
-                <a href="#">🐦</a>
+                <a href="#" aria-label="Email">📧</a>
+                <a href="#" aria-label="Facebook">📘</a>
+                <a href="#" aria-label="Instagram">📷</a>
+                <a href="#" aria-label="Twitter">🐦</a>
             </div>
             <p>&copy; 2025 ThumbCraft. Tous droits réservés.</p>
-            <p>Propulsez votre chaîne YouTube avec des miniatures qui performent!</p>
+            <p>Propulsez votre chaîne YouTube avec des miniatures qui performent !</p>
         </div>
     </footer>
 
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            // Effet de défilement sur la barre de navigation
             const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            // Animation d'apparition au défilement
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Cesse d'observer une fois l'animation jouée
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Alerte de soumission du formulaire
+            const contactForm = document.querySelector('.contact-form form');
+            if(contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Merci pour votre demande ! Nous vous contacterons dans les plus brefs délais.');
+                    contactForm.reset(); // Réinitialise le formulaire après soumission
+                });
             }
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Merci pour votre demande! Nous vous contacterons dans les plus brefs délais.');
-        });
-
-        // Add hover effects to cards
-        document.querySelectorAll('.service-card, .portfolio-item, .pricing-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
         });
     </script>
 </body>
